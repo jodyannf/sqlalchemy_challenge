@@ -35,14 +35,15 @@ app=Flask(__name__)
 #################################################
 @app.route("/")
 def Home():
-    """List all available api routes."""
+    """List all available api routes"""
     return (
         f"Available Routes:<br/>"
         f"Precipation data:/api/v1.0/precipitation<br/>"
         f"All Stations:/api/v1.0/stations<br/>"
         f"/api/v1.0/tobs<br/>"
-        f"/api/v1.0/<start><br/>"
-        f"/api/v1.0/<start>/<end>"
+        f"/api/v1.0/startdate<br/>"
+        f"/api/v1.0/startdate/enddate<br/>"
+        f"Add the start and end date in the format YYYY-MM-DD"
         
     )
 @app.route("/api/v1.0/precipitation")
@@ -98,8 +99,7 @@ def tobs():
     # Create our session (link) from Python to DB 
     session = Session(engine)  
       
-  """Return temperature observation of the most
-        active station for the last year """
+    # active station for the last year 
 
     results = session.query(measurement.date, measurement.tobs)\
         .filter(measurement.station == 'USC00519281')\
@@ -116,7 +116,7 @@ def tobs():
 
     return jsonify(temp_data)
   
-@app.route("api/v1.0/<start><br/>")
+@app.route("/api/v1.0/<start>")
 def start(start):
 
     # Create our session (link) from Python to DB 
